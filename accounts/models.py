@@ -25,9 +25,14 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(
+        self, email, password=None, phone_number=None, **extra_fields
+    ):
         if not password:
             raise ValueError("Пароль обязателен для суперпользователя.")
+
+        if not phone_number:
+            raise ValueError("Номер телефона обязателен для суперпользователя.")
 
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -37,9 +42,8 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("У суперпользователя is_staff должен быть True.")
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("У суперпользователя is_superuser должен быть True.")
-        if not extra_fields.get("phone_number"):
-            raise ValueError("Номер телефона обязателен для суперпользователя.")
 
+        extra_fields["phone_number"] = phone_number
         return self.create_user(email, password, **extra_fields)
 
 
