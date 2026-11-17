@@ -61,6 +61,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     birthdate = models.DateField("дата рождения", null=True, blank=True)
     is_staff = models.BooleanField("статус сотрудника", default=False)
     is_active = models.BooleanField("активен", default=True)
+    registration_source = models.CharField(
+        "источник регистрации",
+        max_length=20,
+        default="local",
+    )
     date_joined = models.DateTimeField("дата регистрации", auto_now_add=True)
 
     objects = CustomUserManager()

@@ -4,6 +4,33 @@ info:
   version: 1.0.0
   description: CustomUser, permissions and JWT homework project
 paths:
+  /api/auth/google/login/:
+    post:
+      operationId: auth_google_login_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Google'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Google'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Google'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Google'
+          description: ''
   /api/auth/login/:
     post:
       operationId: auth_login_create
@@ -314,6 +341,13 @@ components:
       required:
       - email
       - password
+    Google:
+      type: object
+      properties:
+        code:
+          type: string
+      required:
+      - code
     PatchedProduct:
       type: object
       properties:
@@ -378,6 +412,10 @@ components:
           type: boolean
           readOnly: true
           title: Статус сотрудника
+        registration_source:
+          type: string
+          readOnly: true
+          title: Источник регистрации
     Product:
       type: object
       properties:
@@ -501,10 +539,15 @@ components:
           type: boolean
           readOnly: true
           title: Статус сотрудника
+        registration_source:
+          type: string
+          readOnly: true
+          title: Источник регистрации
       required:
       - email
       - id
       - is_staff
+      - registration_source
   securitySchemes:
     jwtAuth:
       type: http

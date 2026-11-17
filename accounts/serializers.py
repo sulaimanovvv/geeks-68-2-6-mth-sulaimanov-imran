@@ -16,8 +16,9 @@ class UserSerializer(serializers.ModelSerializer):
             "phone_number",
             "birthdate",
             "is_staff",
+            "registration_source",
         )
-        read_only_fields = ("id", "email", "is_staff")
+        read_only_fields = ("id", "email", "is_staff", "registration_source")
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -61,3 +62,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["email"] = user.email
         token["birthdate"] = user.birthdate.isoformat() if user.birthdate else None
         return token
+
+
+class GoogleSerializer(serializers.Serializer):
+    code = serializers.CharField()
