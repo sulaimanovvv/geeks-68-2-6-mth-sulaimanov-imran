@@ -93,6 +93,16 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/5",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
 SPECTACULAR_SETTINGS = {
     "TITLE": "DRF 6 — Lessons 1–3 API",
     "DESCRIPTION": "CustomUser, permissions and JWT homework project",

@@ -1,9 +1,11 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .serializers import (
+    ConfirmRegistrationSerializer,
     CustomTokenObtainPairSerializer,
     RegisterSerializer,
     UserSerializer,
@@ -17,6 +19,18 @@ class RegisterView(generics.CreateAPIView):
     @extend_schema(tags=["Авторизация"], summary="Регистрация по email")
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+
+
+class ConfirmRegistrationView(generics.GenericAPIView):
+    serializer_class = ConfirmRegistrationSerializer
+    permission_classes = (AllowAny,)
+
+    @extend_schema(tags=["Авторизация"], summary="Подтверждение регистрации")
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "Регистрация подтверждена."})
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
